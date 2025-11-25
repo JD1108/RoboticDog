@@ -1,2 +1,12 @@
-idf_component_register(SRCS "main.c"
-                    INCLUDE_DIRS ".")
+idf_component_register(
+    SRCS 
+        "main.c"
+        "leg.cpp"
+        "pca9685.cpp" 
+    INCLUDE_DIRS 
+        "include"
+    REQUIRES 
+        driver 
+        esp_timer 
+        esp_event
+    )

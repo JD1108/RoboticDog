@@ -2,6 +2,7 @@
 build/
 sdkconfig.old
 sdkconfig.defaults
+.clangd/    
 
 # CMake
 CMakeFiles/
@@ -41,3 +42,6 @@ Spotlight-V100
 
 # sensitive files
 passwords.h
+
+#supportive files
+sheets/
