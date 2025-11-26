@@ -76,6 +76,7 @@ float Leg::kneeAngle(float x, float y)const{ //return the knee angle for a given
 void Leg::setStepHeight(float height){ // in mm, should be positiv and in good relation to stepLength
     if(height<=40.0f && height<=0.5*stepLength && height<=0.3*stepHeight && height>0.0f){
         stepHeight = height;
+        
     }
 }
 void Leg::setStepLength(float length){ // in mm, should be between 0 and 40
