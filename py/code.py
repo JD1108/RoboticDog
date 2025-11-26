@@ -56,7 +56,6 @@ def trajectory(time, phaseOffset, stepTime, stepLength,height,stepHeight):
         p3 = np.array([0.33*stepLength,height+0.1*stepHeight])
         p4 = np.array([0.25*stepLength,height])
         x,y = bezier4(p0, p1, p2, p3,p4, p)
-        #x =  swingX(p,-0.75*stepLength,+0.25*stepLength,stepLength/stepTime)
     return [x, y]
 
 
