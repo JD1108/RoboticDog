@@ -2,8 +2,8 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 
-#include "leg.hpp"
-#include "pca9685.hpp"
+#include "legWrapper.h"
+#include "pca9685Wrapper.h"
 
 
 void app_main(void)
