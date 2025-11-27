@@ -24,5 +24,4 @@ class Leg {
         void setHeight(float height);    //in mm, will be used  in future versions with IMU feedback
         void setStepTime(float time);
         Leg(float phase);
-
 };
