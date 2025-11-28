@@ -194,4 +194,56 @@ for t in np.linspace(stepTime//4*3-20,stepTime//4*3+20,200):
 fig, ax = plt.subplots()
 ax.plot(arr[:,0],arr[:,2])
 plt.show()
+#%%
+import serial as se
+import numpy as np
+import matplotlib.pyplot as plt
+
+ser=se.Serial('/dev/tty.usbserial-10',115200)
+thighLength=77
+lowerLegLength=64
+
+plt.ion()
+fig,axes= plt.subplots(2,2)
+axes=axes.ravel()
+axes[0].set_ylabel("Front Left")
+axes[1].set_ylabel("Rear Right")
+axes[2].set_ylabel("Front Right")
+axes[3].set_ylabel("Rear Left")
+lines=[]
+
+for ax in axes:
+    line,= ax.plot([],[],marker='o')
+    ax.set_xlim(-50,50)
+    ax.set_ylim(-140,0)
+    ax.set_aspect('equal')
+    lines.append(line)
+bol=True
+savepic=True
+while bol:
+    lineRaw=ser.readline().decode().strip()
+    if not (lineRaw.startswith('<start>') and lineRaw.endswith('<end>')):
+        continue
+    parts=lineRaw.replace('<start>','').replace('<end>','').replace(' ','').split(';')
+    angles=[float(p) for p in parts]
+    aH=[]
+    aK=[]
+    for i in range(0,4):
+        aH=-angles[2*i]*np.pi/180
+        aK=angles[2*i+1]*np.pi/180
+        kX=thighLength*np.cos(aH)
+        kY=thighLength*np.sin(aH)
+        fX=kX+lowerLegLength*np.cos(-aK+(np.pi+aH))
+        fY=kY+lowerLegLength*np.sin(-aK+(np.pi+aH))
+        lines[i].set_data([0, kX, fX], [0, kY, fY])
+    fig.canvas.draw()
+    fig.canvas.flush_events()
+    if savepic:
+        plt.savefig("images/debug_animation.png", bbox_inches="tight", transparent=True)
+        savepic=False
+    plt.pause(0.01)
+    
+
+
+
 
