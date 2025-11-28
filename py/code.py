@@ -241,7 +241,7 @@ while bol:
     if savepic:
         plt.savefig("images/debug_animation.png", bbox_inches="tight", transparent=True)
         savepic=False
-    plt.pause(0.01)
+    plt.pause(0.03)
     
 
 

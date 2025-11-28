@@ -6,7 +6,9 @@ idf_component_register(
         "src/leg.cpp"
         "src/pca9685.cpp" 
         "src/legWrapper.cpp"
+        "src/globals.c"
         "src/pca9685Wrapper.cpp"
+        "src/debug.c"
 
     INCLUDE_DIRS 
         "include"
