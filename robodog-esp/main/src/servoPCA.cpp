@@ -92,6 +92,8 @@ void ServoPCA::calibration(){
     for(int j=0;j<=i;j++){
         std::cout<<j+1<<"\t"<<low[j]<<"\t"<<high[j]<<std::endl;
     }
+    std::cout<<std::endl<<"Finish with ENTER...";
+    std::cin.get();
 
 
 }
