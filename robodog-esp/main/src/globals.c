@@ -1,5 +1,6 @@
-#include "../include/globals.h"
 #include <stddef.h>
+
+#include "globals.h"
 
 bool walking = false;
 float time = 0.0f;

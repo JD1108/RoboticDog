@@ -1,6 +1,8 @@
+#include <new>
+
 #include "legWrapper.h"
 #include "leg.hpp"
-#include <new>
+
 
 extern "C"{
 

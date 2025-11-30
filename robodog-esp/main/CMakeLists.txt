@@ -4,10 +4,10 @@ idf_component_register(
     SRCS 
         "main.c"
         "src/leg.cpp"
-        "src/pca9685.cpp" 
+        "src/serPCA.cpp" 
         "src/legWrapper.cpp"
         "src/globals.c"
-        "src/pca9685Wrapper.cpp"
+        "src/sevoPCAWrapper.cpp"
         "src/debug.c"
 
     INCLUDE_DIRS 

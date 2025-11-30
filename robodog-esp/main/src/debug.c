@@ -1,8 +1,10 @@
-#include "globals.h"
-#include "debug.h"
 #include <stdio.h>
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
+
+
+#include "globals.h"
+#include "debug.h"
 
 void walkDebug(void *pvParameters){
     walking=true;

@@ -1,9 +1,17 @@
-#include "leg.hpp"
 #include <cmath>
 #include <iostream>
 
-float Leg::stepTime;
+#include "leg.hpp"
 
+//float Leg::stepTime;
+Leg::Leg(float phase){
+    phaseOffset = phase;
+    setStepLength(40.0f);
+    setHeight(-135.0f);
+    setStepHeight(10.0f);
+    setStepTime(2000.0f);
+}
+//private
 float Leg::tranX(float time)const{ //returns the X value for every timestep
     float phase=fmodf((time/stepTime)+phaseOffset,1.0f); // phase from 0 to 1
     float x=0.0f;
@@ -40,6 +48,7 @@ float Leg::bezier(const float p[5], float phase)const{ //returns the component o
             powf(t,4.0f)* p[4];
     return b;
 }
+//public
 float Leg::getHipAngle(float time)const{ //return the hip angle for a given set of x,y in degree
     float x=tranX(time);
     float y=tranY(time);
@@ -123,12 +132,6 @@ void Leg::setStepTime(float time){ // in ms, time for one hole cycle, should be 
     }
 
 }
-Leg::Leg(float phase){
-    phaseOffset = phase;
-    setStepLength(40.0f);
-    setHeight(-135.0f);
-    setStepHeight(10.0f);
-    setStepTime(2000.0f);
-}
+
 
 

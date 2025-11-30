@@ -1,11 +1,10 @@
-#include <stdio.h>
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 
 #include "legWrapper.h"
-#include "pca9685Wrapper.h"
+#include "servoPCAWrapper.h"
 #include "globals.h"
-#include "debug.h"
+#include "debug.h" //not in final version
 
 
 
