@@ -1,10 +1,19 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
+#include "esp_wifi.h"
+#include "string.h"
+#include "nvs_flash.h"
+#include "esp_http_server.h"
+#include "esp_netif.h"
 
 #include "legWrapper.h"
 #include "servoPCAWrapper.h"
 #include "globals.h"
-#include "debug.h" //not in final version
+#include "passwords.h"
+#include "web.h"
+
+
+
 
 
 
@@ -18,7 +27,8 @@ void init(){
 
 void app_main(void)
 {
-    init();
-    xTaskCreate(walkDebug,"walking",16384,NULL,5,NULL);
+    wlanInit();
+   // httpInit();
+    //calibration();
 }
 

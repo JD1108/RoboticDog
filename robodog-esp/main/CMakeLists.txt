@@ -4,11 +4,12 @@ idf_component_register(
     SRCS 
         "main.c"
         "src/leg.cpp"
-        "src/serPCA.cpp" 
+        "src/servoPCA.cpp" 
         "src/legWrapper.cpp"
         "src/globals.c"
-        "src/sevoPCAWrapper.cpp"
-        "src/debug.c"
+        "src/servoPCAWrapper.cpp"
+        "src/web.c"
+        
 
     INCLUDE_DIRS 
         "include"
@@ -16,4 +17,7 @@ idf_component_register(
         driver 
         esp_timer 
         esp_event
+        esp_wifi
+        nvs_flash
+        esp_http_server
     )

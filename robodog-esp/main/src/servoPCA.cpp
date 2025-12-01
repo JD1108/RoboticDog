@@ -38,10 +38,12 @@ uint16_t ServoPCA::getWidth(float angle)const{
     return width;
 }
 //public
-uint8_t ServoPCA::getOffLow(uint16_t width)const{
+uint8_t ServoPCA::getOffLow(float angle)const{
+    uint16_t width=getWidth(angle);
     return width & 0xFF;
 }
-uint8_t ServoPCA::getOffHigh(uint16_t width)const{
+uint8_t ServoPCA::getOffHigh(float angle)const{
+    uint16_t width=getWidth(angle);
     return width>>8;
 }
 uint8_t ServoPCA::getReg()const{
@@ -88,16 +90,16 @@ void ServoPCA::calibration(){
     vTaskDelay(pdMS_TO_TICKS(500));
 
     int i=0;
-    uint8_t low[16];
-    uint8_t high[16];
+    uint16_t low[16];
+    uint16_t high[16];
     while(i<16){
         std::cout<<"Connect servo to channel 0 the PCA9685."<<std::endl
         <<"Press a ENTER to start calibration...";
         std::cin.get();
         char input=' ';
         int inputI=0;
-        uint8_t tempLow=250;
-        uint8_t tempHigh=350;
+        uint16_t tempLow=250;
+        uint16_t tempHigh=350;
         uint8_t pwm[5];
         pwm[0]=0x06;
         pwm[1]=0x00;

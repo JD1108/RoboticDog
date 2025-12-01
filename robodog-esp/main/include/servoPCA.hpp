@@ -11,8 +11,8 @@ class ServoPCA { // this class is made for MG90S with PCA9685
 
     public:
         ServoPCA(int low, int high, int chanel);
-        uint8_t getOffLow(uint16_t width)const;
-        uint8_t getOffHigh(uint16_t width)const;
+        uint8_t getOffLow(float angle)const;
+        uint8_t getOffHigh(float angle)const;
         uint8_t getReg()const;
         static void calibration();
         
