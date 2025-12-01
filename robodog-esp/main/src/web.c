@@ -12,55 +12,39 @@
 #include "web.h"
 
 void wlanInit(){
+
+    //nvs
     esp_err_t ret = nvs_flash_init();
-    ESP_ERROR_CHECK(esp_netif_init());
-    ESP_ERROR_CHECK(esp_event_loop_create_default());
     if (ret == ESP_ERR_NVS_NO_FREE_PAGES || ret == ESP_ERR_NVS_NEW_VERSION_FOUND) {
-        ESP_ERROR_CHECK(nvs_flash_erase());
-        ret = nvs_flash_init();
+      ESP_ERROR_CHECK(nvs_flash_erase());
+      ret = nvs_flash_init();
     }
     ESP_ERROR_CHECK(ret);
 
-    // Default-AP-Netif erstellen
+    //netif
+    ESP_ERROR_CHECK(esp_netif_init());
+    ESP_ERROR_CHECK(esp_event_loop_create_default());
     esp_netif_create_default_wifi_ap();
 
-    // Event-Handler registrieren
-    ESP_ERROR_CHECK(esp_event_handler_instance_register(
-        WIFI_EVENT,
-        ESP_EVENT_ANY_ID,
-        &wifi_event_handler,
-        NULL,
-        NULL));
-
-    // WiFi initialisieren
+    //wifi init
     wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
     ESP_ERROR_CHECK(esp_wifi_init(&cfg));
-    ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_AP));
 
-    // AP-Konfiguration
-    wifi_config_t apConfig = {
-        .ap.ssid = SSID,
-        .ap.password = WLAN_PASSWORD,
-        .ap.authmode = WIFI_AUTH_WPA_WPA2_PSK,
-        .ap.max_connection = 4
+    ESP_ERROR_CHECK(esp_event_handler_instance_register(WIFI_EVENT,
+                                                        ESP_EVENT_ANY_ID,
+                                                        &wifi_event_handler,
+                                                        NULL,
+                                                        NULL));
+
+    wifi_config_t apConv={
+        .ap.ssid=SSID,
+        .ap.password=WLAN_PASSWORD,
+        .ap.authmode=WIFI_AUTH_WPA3_PSK,
+        .ap.max_connection=4
     };
-    ESP_ERROR_CHECK(esp_wifi_set_config(WIFI_IF_AP, &apConfig));
-
-    // Statische IP setzen
-    esp_netif_ip_info_t ip_info;
-    IP4_ADDR(&ip_info.ip, 192,168,4,1);
-    IP4_ADDR(&ip_info.gw, 192,168,4,1);
-    IP4_ADDR(&ip_info.netmask, 255,255,255,0);
-
-    esp_netif_t *ap_netif = esp_netif_get_handle_from_ifkey("WIFI_AP_DEF");
-    ESP_ERROR_CHECK(esp_netif_dhcps_stop(ap_netif));
-    ESP_ERROR_CHECK(esp_netif_set_ip_info(ap_netif, &ip_info));
-    ESP_ERROR_CHECK(esp_netif_dhcps_start(ap_netif));
-
-    // AP starten
-    ESP_ERROR_CHECK(esp_wifi_start());
-
-    printf("AP IP: " IPSTR "\n", IP2STR(&ip_info.ip));
+    ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_AP));
+    ESP_ERROR_CHECK(esp_wifi_set_config(WIFI_IF_AP,&apConv));
+    ESP_ERROR_CHECK(esp_wifi_start());   
 }
 
 void httpInit(){
