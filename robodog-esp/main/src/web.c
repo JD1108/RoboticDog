@@ -10,6 +10,7 @@
 
 #include "passwords.h"
 #include "web.h"
+#include "globals.h"
 
 void wlanInit(){
 
@@ -55,7 +56,7 @@ void httpInit(){
     httpd_uri_t uri = {
         .uri       = "/",
         .method    = HTTP_GET,
-        .handler   = helloWorld,
+        .handler   = indexHandler,
         .user_ctx  = NULL
     };
     ESP_ERROR_CHECK(httpd_register_uri_handler(server,&uri));
@@ -74,10 +75,19 @@ void wifi_event_handler(void* arg,esp_event_base_t event_base,int32_t event_id, 
     }
 }
 
-esp_err_t helloWorld(httpd_req_t *req){
+esp_err_t indexHandler(httpd_req_t *req){
+    httpd_resp_send(req,html,strlen(html));
+    return ESP_OK;
+}
+esp_err_t turnHandler(httpd_req_t *req){
 
-    const char* resp="<h1>Hello</h1><h2>World</h2>";
-    httpd_resp_send(req,resp,strlen(resp));
+    return ESP_OK;
+}
+esp_err_t stopHandler(httpd_req_t *req){
 
+    return ESP_OK;
+}
+esp_err_t goHandler(httpd_req_t *req){
+    
     return ESP_OK;
 }
