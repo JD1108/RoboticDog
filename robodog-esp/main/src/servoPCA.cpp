@@ -1,10 +1,13 @@
 #include <cstdint>
 #include <iostream>
+
 extern "C"{
     #include "driver/i2c_master.h"
     #include "freertos/FreeRTOS.h"
     #include "freertos/task.h"
 }
+
+
 #include "servoPCA.hpp"
 
 ServoPCA::ServoPCA(int low, int high, int chanel){
@@ -59,7 +62,7 @@ void ServoPCA::calibration(){
     i2cConf.scl_io_num = static_cast<gpio_num_t>(22);
     i2cConf.sda_io_num = static_cast<gpio_num_t>(21);
     i2cConf.glitch_ignore_cnt = 7;
-    i2cConf.flags.enable_internal_pullup = false;
+    i2cConf.flags.enable_internal_pullup = true;
 
     i2c_master_bus_handle_t busHandle;
     ESP_ERROR_CHECK(i2c_new_master_bus(&i2cConf,&busHandle));
@@ -92,11 +95,43 @@ void ServoPCA::calibration(){
     int i=0;
     uint16_t low[16];
     uint16_t high[16];
+
+    uint8_t pwm[5];
+    pwm[0]=0x06;
+    pwm[1]=0x00;
+    pwm[2]=0x00;
+    pwm[3]=307&0xFF;
+    pwm[4]=307>>8;
+    ESP_ERROR_CHECK(i2c_master_transmit(devHandle, pwm, 5, -1));
+    
+
+    for(int i=100;i>0;i--){
+        int val=215+0.92*i;
+        pwm[3]=val&0xFF;
+        pwm[4]=val>>8;
+        ESP_ERROR_CHECK(i2c_master_transmit(devHandle, pwm, 5, -1));
+        vTaskDelay(pdMS_TO_TICKS(100));
+    }
+    for(int i=0;i<200;i++){
+        int val=215+0.965*i;
+        pwm[3]=val&0xFF;
+        pwm[4]=val>>8;
+        ESP_ERROR_CHECK(i2c_master_transmit(devHandle, pwm, 5, -1));
+        vTaskDelay(pdMS_TO_TICKS(100));
+    }
+    for(int i=100;i>0;i--){
+        int val=307+0.93*i;
+        pwm[3]=val&0xFF;
+        pwm[4]=val>>8;
+        ESP_ERROR_CHECK(i2c_master_transmit(devHandle, pwm, 5, -1));
+        vTaskDelay(pdMS_TO_TICKS(100));
+    }
+    /*
     while(i<16){
         std::cout<<"Connect servo to channel 0 the PCA9685."<<std::endl
         <<"Press a ENTER to start calibration...";
-        std::cin.get();
-        char input=' ';
+        dummy = readLineUART();
+        std::string input;
         int inputI=0;
         uint16_t tempLow=250;
         uint16_t tempHigh=350;
@@ -108,7 +143,7 @@ void ServoPCA::calibration(){
         pwm[4]=307>>8;
         ESP_ERROR_CHECK(i2c_master_transmit(devHandle, pwm, 5, -1));
         std::cout<<i+1<<". Servo at 90 degree (pwm-value:307)"<<std::endl<<"Press Enter to continue...";
-        std::cin.get();
+        dummy = readLineUART();
         while(1){
             pwm[3]=tempLow&0xFF;
             pwm[4]=tempLow>>8;
@@ -116,13 +151,14 @@ void ServoPCA::calibration(){
             std::cout<<"This is pwm-value"<<tempLow<< ". How much do you want to lower?"<<std::endl
                 <<"0 = end"<<std::endl
                 <<"Plese enter number:";
-            std::cin>>inputI;
+            input = readLineUART();
+            inputI=std::atoi(input.c_str());
             if(inputI==0){break;}
             tempLow-=inputI;
         }
         low[i]=tempLow;
         std::cout<<"Press Enter to continue with upper bound...";
-        std::cin.get();
+        dummy = readLineUART();
         while(1){
             pwm[3]=tempHigh&0xFF;
             pwm[4]=tempHigh>>8;
@@ -130,7 +166,8 @@ void ServoPCA::calibration(){
             std::cout<<"This is pwm-value"<<tempHigh<< ". How much do you want to higher?"<<std::endl
                 <<"0 = end"<<std::endl
                 <<"Plese enter number:";
-            std::cin>>inputI;
+            input = readLineUART();
+            inputI=std::atoi(input.c_str());
             if(inputI==0){break;}
             tempHigh+=inputI;
         }
@@ -138,11 +175,11 @@ void ServoPCA::calibration(){
         
         do{
             std::cout<<"Calibrate another servo?"<<std::endl<<"y/n"<<std::endl;
-            std::cin>>input;
+            input = readLineUART();
 
-        }while(input!='y'&&input!='Y'&&input!='n'&&input!='N');
+        }while(input[0]!='y'&&input[0]!='Y'&&input[0]!='n'&&input[0]!='N');
         
-        if(input=='N'||input=='N'){break;}
+        if(input[0]=='n'||input[0]=='N'){break;}
         i++;
         pwm[3]=0x00;
         pwm[4]=0x00;
@@ -154,7 +191,7 @@ void ServoPCA::calibration(){
         std::cout<<j+1<<"\t"<<low[j]<<"\t"<<high[j]<<std::endl;
     }
     std::cout<<std::endl<<"Finish with ENTER...";
-    std::cin.get();
-
+    dummy = readLineUART();
+    */
 
 }

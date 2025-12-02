@@ -3,6 +3,8 @@
 
 #include "leg.hpp"
 
+float Leg::stepTime=2000.0f;
+
 //float Leg::stepTime;
 Leg::Leg(float phase){
     phaseOffset = phase;
