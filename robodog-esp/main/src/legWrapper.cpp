@@ -2,6 +2,7 @@
 
 #include "legWrapper.h"
 #include "leg.hpp"
+#include "globals.h"
 
 
 extern "C"{
@@ -44,6 +45,26 @@ extern "C"{
     void setHeight(LegHandle leg,float height){
         Leg* p=reinterpret_cast<Leg*>(leg);
         p->setHeight(height);
+
+    }
+    void setTurn(int fac){
+        float LengthN=40.0f;
+        float c=0.05f;
+        float lengthR=LengthN;
+        float lengthL=LengthN;
+
+        if(fac>0)
+        {
+            lengthR-=fac*c*LengthN;
+        }
+        else if(fac<0)
+        {
+            lengthL+=fac*c*LengthN;
+        }
+        setStepLength(legFR,lengthR);
+        setStepLength(legRR,lengthR);
+        setStepLength(legFL,lengthL);
+        setStepLength(legRL,lengthL);
 
     }
 

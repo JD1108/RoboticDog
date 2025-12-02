@@ -11,16 +11,16 @@ extern "C"{
 #include "servoPCA.hpp"
 
 ServoPCA::ServoPCA(int low, int high, int chanel){
-    if(low>210&&low<300){
+    if(low>124&&low<300){
         cal10=low;
     }else{
-        cal10=215;
+        cal10=125;
     }
-    if(high<404&&high>300){
+    if(high<491&&high>300){
         cal170=high;
     }
     else{
-        cal170=400;
+        cal170=490;
     }
     if(chanel>15 || chanel<0) //impossible chanel will route to the last chanel which is not used in this project
     {
@@ -33,7 +33,7 @@ uint16_t ServoPCA::getWidth(float angle)const{
     uint16_t width;
     if(angle<=170&&angle>=10){
         angle-=10;
-        width=cal10+(angle/170)*(cal170-cal10);
+        width=cal10+(angle/160)*(cal170-cal10);
     }
     else{
         width=cal10+0.5*(cal170-cal10);

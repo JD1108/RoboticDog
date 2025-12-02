@@ -11,6 +11,7 @@
 #include "passwords.h"
 #include "web.h"
 #include "globals.h"
+#include "legWrapper.h"
 
 void wlanInit(){
 
@@ -53,6 +54,7 @@ void httpInit(){
     httpd_config_t httpConv = HTTPD_DEFAULT_CONFIG();
 
     ESP_ERROR_CHECK(httpd_start(&server,&httpConv));
+
     httpd_uri_t uri = {
         .uri       = "/",
         .method    = HTTP_GET,
@@ -60,6 +62,27 @@ void httpInit(){
         .user_ctx  = NULL
     };
     ESP_ERROR_CHECK(httpd_register_uri_handler(server,&uri));
+    httpd_uri_t uriTurn = {
+        .uri       = "/turn",
+        .method    = HTTP_GET,
+        .handler   = turnHandler,
+        .user_ctx  = NULL
+    };
+    ESP_ERROR_CHECK(httpd_register_uri_handler(server,&uriTurn));
+    httpd_uri_t uriGo = {
+        .uri       = "/go",
+        .method    = HTTP_GET,
+        .handler   = goHandler,
+        .user_ctx  = NULL
+    };
+    ESP_ERROR_CHECK(httpd_register_uri_handler(server,&uriGo));
+    httpd_uri_t uriStop = {
+        .uri       = "/stop",
+        .method    = HTTP_GET,
+        .handler   = stopHandler,
+        .user_ctx  = NULL
+    };
+    ESP_ERROR_CHECK(httpd_register_uri_handler(server,&uriStop));
 
 
 }
@@ -80,14 +103,57 @@ esp_err_t indexHandler(httpd_req_t *req){
     return ESP_OK;
 }
 esp_err_t turnHandler(httpd_req_t *req){
+    char buff[24];
+    int fac=0;
+    int len=httpd_req_get_url_query_len(req);
+    if(len>sizeof(buff)){
+        len=sizeof(buff);
+    }
+    if(httpd_req_get_url_query_str(req,buff,len)==ESP_OK)
+    {
+        char cFac[8];
+        
+        if(httpd_query_key_value(buff,"turn",cFac,sizeof(cFac))==ESP_OK){
+            fac=atoi(cFac);
+        }
+    }
+    setTurn(fac);
 
     return ESP_OK;
 }
 esp_err_t stopHandler(httpd_req_t *req){
+    char resp[]="OK";
+    walking=false;
+    httpd_resp_send(req,resp,strlen(resp));
 
     return ESP_OK;
 }
 esp_err_t goHandler(httpd_req_t *req){
-    
+    char resp[]="OK";
+    walking=true;
+    httpd_resp_send(req,resp,strlen(resp));
     return ESP_OK;
 }
+
+const char html[]= "<!DOCTYPE html><html><body>"
+                "<label for=\"servo0\">Servo 0:</label>"
+                "<input type=\"range\" id=\"servo0\" min=\"-10\" max=\"10\"value=\"0\" oninput=\"turn(this.value)\">"
+                "<button onclick=\"start()\">Start</button>"
+                "<button onclick=\"stop()\">Stop</button>"
+                "<script>function turn(factor) {"
+                "fetch(`/turn?turn=${factor}`)"
+                ".then(response => response.text())"
+                ".then(data => console.log(data))"
+                ".catch(err => console.error(err));}"
+                "function stop(){"
+                "fetch(`/stop`)"
+                ".then(response => response.text())"
+                ".then(data => console.log(data))"
+                ".catch(err => console.error(err));}"
+                "function start(){"
+                "fetch(`/go`)"
+                ".then(response => response.text())"
+                ".then(data => console.log(data))"
+                ".catch(err => console.error(err));}"
+                "</script>"
+                "</body></html>";

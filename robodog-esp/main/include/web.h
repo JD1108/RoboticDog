@@ -10,4 +10,4 @@ esp_err_t turnHandler(httpd_req_t *req);
 esp_err_t stopHandler(httpd_req_t *req);
 esp_err_t goHandler(httpd_req_t *req);
 
-const char* html="";
+extern const char html[];

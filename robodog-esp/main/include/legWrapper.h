@@ -20,7 +20,7 @@ void setStepHeight(LegHandle leg,float height);  // in mm, should be positiv and
 void setStepLength(LegHandle leg,float length);  // in mm, should be between 0 and 40
 void setHeight(LegHandle leg,float height); // in mm, should be negativ between -80 and -135
 
-
+void setTurn(int fac);
 
 
 #ifdef __cplusplus
