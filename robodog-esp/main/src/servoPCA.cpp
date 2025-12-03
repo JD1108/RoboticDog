@@ -141,8 +141,7 @@ void ServoPCA::calibration(int angle){
         pwm[4]=val>>8;
         ESP_ERROR_CHECK(i2c_master_transmit(devHandle, pwm, 5, -1));
         vTaskDelay(pdMS_TO_TICKS(100));
-    }
-    /*
+}
     while(i<16){
         std::cout<<"Connect servo to channel 0 the PCA9685."<<std::endl
         <<"Press a ENTER to start calibration...";

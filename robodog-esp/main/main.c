@@ -31,59 +31,59 @@ void walk(void *pvParameters){
 
             //FL
             //Hip
-            an=getHipAngle(legFL,time);
+            an=getHipAngle(legFL,timeF);
             data[0]=getReg(hipFL);
             data[3]=getOffLow(hipFL,an);
             data[4]=getOffHigh(hipFL,an);
             ESP_ERROR_CHECK(i2c_master_transmit(devHandle, data, 5, -1));
             //Knee
-            an=getKneeAngle(legFL,time);
+            an=getKneeAngle(legFL,timeF);
             data[0]=getReg(kneeFL);
             data[3]=getOffLow(kneeFL,an);
             data[4]=getOffHigh(kneeFL,an);
             ESP_ERROR_CHECK(i2c_master_transmit(devHandle, data, 5, -1));
             //RL
             //Hip
-            an=getHipAngle(legRL,time);
+            an=getHipAngle(legRL,timeF);
             data[0]=getReg(hipRL);
             data[3]=getOffLow(hipRL,an);
             data[4]=getOffHigh(hipRL,an);
             ESP_ERROR_CHECK(i2c_master_transmit(devHandle, data, 5, -1));
             //Knee
-            an=getKneeAngle(legRL,time);
+            an=getKneeAngle(legRL,timeF);
             data[0]=getReg(kneeRL);
             data[3]=getOffLow(kneeRL,an);
             data[4]=getOffHigh(kneeRL,an);
             ESP_ERROR_CHECK(i2c_master_transmit(devHandle, data, 5, -1));
             //RR
             //Hip
-            an=getHipAngle(legRR,time);
+            an=getHipAngle(legRR,timeF);
             data[0]=getReg(hipRR);
             data[3]=getOffLow(hipRR,an);
             data[4]=getOffHigh(hipRR,an);
             ESP_ERROR_CHECK(i2c_master_transmit(devHandle, data, 5, -1));
             //Knee
-            an=getKneeAngle(legRR,time);
+            an=getKneeAngle(legRR,timeF);
             data[0]=getReg(kneeRR);
             data[3]=getOffLow(kneeRR,an);
             data[4]=getOffHigh(kneeRR,an);
             ESP_ERROR_CHECK(i2c_master_transmit(devHandle, data, 5, -1));
             //FR
             //Hip
-            an=getHipAngle(legFR,time);
+            an=getHipAngle(legFR,timeF);
             data[0]=getReg(hipFR);
             data[3]=getOffLow(hipFR,an);
             data[4]=getOffHigh(hipFR,an);
             ESP_ERROR_CHECK(i2c_master_transmit(devHandle, data, 5, -1));
             //Knee
-            an=getKneeAngle(legFR,time);
+            an=getKneeAngle(legFR,timeF);
             data[0]=getReg(kneeFR);
             data[3]=getOffLow(kneeFR,an);
             data[4]=getOffHigh(kneeFR,an);
             ESP_ERROR_CHECK(i2c_master_transmit(devHandle, data, 5, -1));
 
             
-            time+=50.0f;
+            timeF+=50.0f;
             
         }
         vTaskDelay(pdMS_TO_TICKS(50));
@@ -140,7 +140,6 @@ void app_main(void)
 
     }
 
-    /*
     pwm[0]=0x06;
     pwm[3]=307&0xFF;
     pwm[4]=307>>8;

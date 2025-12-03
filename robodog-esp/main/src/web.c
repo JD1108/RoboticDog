@@ -83,6 +83,13 @@ void httpInit(){
         .user_ctx  = NULL
     };
     ESP_ERROR_CHECK(httpd_register_uri_handler(server,&uriStop));
+    httpd_uri_t uriCal = {
+        .uri       = "/setAngle",
+        .method    = HTTP_GET,
+        .handler   = calHandler,
+        .user_ctx  = NULL
+    };
+    ESP_ERROR_CHECK(httpd_register_uri_handler(server,&uriCal));
 
 
 }
@@ -118,6 +125,8 @@ esp_err_t turnHandler(httpd_req_t *req){
         }
     }
     setTurn(fac);
+    char resp[]="OK";
+    httpd_resp_send(req,resp,strlen(resp));
 
     return ESP_OK;
 }
@@ -134,10 +143,11 @@ esp_err_t goHandler(httpd_req_t *req){
     httpd_resp_send(req,resp,strlen(resp));
     return ESP_OK;
 }
-esp_err_t calHandler(httpd_req_t *req){
+esp_err_t calHandler(httpd_req_t *req){ // here Debug
+    
     walking=false;
     char buff[24];
-    int ang=0;
+    int ang=90;
     int len=httpd_req_get_url_query_len(req);
     if(len>sizeof(buff)){
         len=sizeof(buff);
@@ -148,11 +158,14 @@ esp_err_t calHandler(httpd_req_t *req){
         
         if(httpd_query_key_value(buff,"turn",cAng,sizeof(cAng))==ESP_OK){
             ang=atoi(cAng);
+            printf("jo\n");
         }
     }
     vTaskDelay(pdMS_TO_TICKS(1000));
     calibration(ang);
-
+    char resp[]="OK";
+    httpd_resp_send(req,resp,strlen(resp));
+    printf("jo\n");
     return ESP_OK;
 }
 
@@ -273,7 +286,7 @@ const char html[]= "<!DOCTYPE html>\n"
 "                a170.classList.remove(\"visible\"); a170.classList.add(\"hidden\");\n"
 "            }\n"
 "        }\n"
-"        function turn(factor) {\n"
+"        function setAngle(factor) {\n"
 "            fetch(`/setAngle?angle=${factor}`)\n"
 "                .then(response => response.text())\n"
 "                .then(data => console.log(data))\n"

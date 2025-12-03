@@ -10,7 +10,7 @@ extern "C" {
 #include "servoPCAWrapper.h"
 
 extern bool walking;
-extern float time;
+extern float timeF;
 extern LegHandle legFL;
 extern LegHandle legRR;
 extern LegHandle legFR;

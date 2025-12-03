@@ -3,7 +3,7 @@
 #include "globals.h"
 
 bool walking = false;
-float time = 0.0f;
+float timeF = 0.0f;
 LegHandle legFL = NULL;
 LegHandle legRR = NULL;
 LegHandle legFR = NULL;

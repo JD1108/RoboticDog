@@ -10,14 +10,14 @@ void walkDebug(void *pvParameters){
     while(1){
         if(walking){
             float an[8];
-            an[0]=getHipAngle(legFL,time);
-            an[1]=getKneeAngle(legFL,time);
-            an[2]=getHipAngle(legRR,time);
-            an[3]=getKneeAngle(legRR,time);
-            an[4]=getHipAngle(legFR,time);
-            an[5]=getKneeAngle(legFR,time);
-            an[6]=getHipAngle(legRL,time);
-            an[7]=getKneeAngle(legRL,time);
+            an[0]=getHipAngle(legFL,timeF);
+            an[1]=getKneeAngle(legFL,timeF);
+            an[2]=getHipAngle(legRR,timeF);
+            an[3]=getKneeAngle(legRR,timeF);
+            an[4]=getHipAngle(legFR,timeF);
+            an[5]=getKneeAngle(legFR,timeF);
+            an[6]=getHipAngle(legRL,timeF);
+            an[7]=getKneeAngle(legRL,timeF);
 
             printf("<start>");
 
@@ -31,7 +31,7 @@ void walkDebug(void *pvParameters){
 
             printf("<end>\n");
 
-            time+=50.0f;
+            timeF+=50.0f;
             
         }
         vTaskDelay(pdMS_TO_TICKS(50));

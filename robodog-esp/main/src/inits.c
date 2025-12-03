@@ -1,3 +1,6 @@
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
+
 #include "inits.h"
 #include "globals.h"
 #include "cal.h"

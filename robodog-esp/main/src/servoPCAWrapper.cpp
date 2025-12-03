@@ -33,7 +33,4 @@ extern "C"{
     void calibration(int angle){
         ServoPCA::calibration(angle);
     } 
-    void walk(void *pvParameters){
-        ServoPCA::walk();
-    }
 }
