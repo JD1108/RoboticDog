@@ -9,5 +9,7 @@ esp_err_t indexHandler(httpd_req_t *req);
 esp_err_t turnHandler(httpd_req_t *req);
 esp_err_t stopHandler(httpd_req_t *req);
 esp_err_t goHandler(httpd_req_t *req);
+esp_err_t calHandler(httpd_req_t *req);
+
 
 extern const char html[];

@@ -58,11 +58,24 @@ void i2cInit(){
     printf("i\n");//IIIIIIIIIIIIIIIIIIII
     vTaskDelay(pdMS_TO_TICKS(500));
 }
+void servoInit(){
+    
+}
+
 
 
 void app_main(void)
 {
     
+    legInit();
+    i2cInit();
+    servoInit();
+    wlanInit();
+    xTaskCreate(walkDebug,"Walking",4096,NULL,5,NULL);
+    
+
+}
+/*
     i2cInit();
     legFL=legCreate(0.75f);
     ServoPCAHandle hip=servoCreate(125,490,0);
@@ -103,11 +116,5 @@ void app_main(void)
     pwm[3]=307&0xFF;
     pwm[4]=307>>8;
     ESP_ERROR_CHECK(i2c_master_transmit(devHandle, pwm, 5, -1));
-   
-   legInit();
-   wlanInit();
-   xTaskCreate(walkDebug,"Walking",4096,NULL,5,NULL);
-    */
-
-}
+   */
 

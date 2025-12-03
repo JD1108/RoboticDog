@@ -12,7 +12,7 @@ void servoDestroy(ServoPCAHandle servo);
 uint8_t getOffLow(ServoPCAHandle servo, float angle);
 uint8_t getOffHigh(ServoPCAHandle servo,float angle);
 uint8_t getReg(ServoPCAHandle servo);
-void calibration();
+void calibration(int angle);
 
 
 #ifdef __cplusplus

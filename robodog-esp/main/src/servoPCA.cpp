@@ -1,5 +1,6 @@
 #include <cstdint>
 #include <iostream>
+#include <math.h>
 
 extern "C"{
     #include "driver/i2c_master.h"
@@ -9,6 +10,7 @@ extern "C"{
 
 
 #include "servoPCA.hpp"
+#include "globals.h"
 
 ServoPCA::ServoPCA(int low, int high, int chanel){
     if(low>124&&low<300){
@@ -52,10 +54,23 @@ uint8_t ServoPCA::getOffHigh(float angle)const{
 uint8_t ServoPCA::getReg()const{
     return reg;
 }
-void ServoPCA::calibration(){
-    
+void ServoPCA::calibration(int angle){
 
-    
+    int pwm=103+(int)round(angle*(409.0f/180.0f));
+
+    uint8_t data[5];
+    data[1]=0x00;
+    data[2]=0x00;
+    data[3]=pwm&0xFF;
+    data[4]=pwm>>8;
+
+    for(int i=0;i<8;i++){
+        data[0]=0x06+4*i;
+        ESP_ERROR_CHECK(i2c_master_transmit(devHandle, data, 5, -1));
+    }
+}
+
+/*
     i2c_master_bus_config_t i2cConf={};
     i2cConf.clk_source = I2C_CLK_SRC_DEFAULT;
     i2cConf.i2c_port = I2C_NUM_0;
@@ -193,5 +208,3 @@ void ServoPCA::calibration(){
     std::cout<<std::endl<<"Finish with ENTER...";
     dummy = readLineUART();
     */
-
-}

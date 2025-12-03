@@ -27,7 +27,7 @@ extern "C"{
         return s->getReg();
 
     }
-    void calibration(){
-        ServoPCA::calibration();
+    void calibration(int angle){
+        ServoPCA::calibration(angle);
     } 
 }
