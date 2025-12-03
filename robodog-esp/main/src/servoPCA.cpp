@@ -54,6 +54,7 @@ uint8_t ServoPCA::getOffHigh(float angle)const{
 uint8_t ServoPCA::getReg()const{
     return reg;
 }
+
 void ServoPCA::calibration(int angle){
 
     int pwm=103+(int)round(angle*(409.0f/180.0f));

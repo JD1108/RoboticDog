@@ -9,9 +9,6 @@ idf_component_register(
         "src/globals.c"
         "src/servoPCAWrapper.cpp"
         "src/web.c"
-        "src/debug.c"
-        
-
     INCLUDE_DIRS 
         "include"
     REQUIRES 

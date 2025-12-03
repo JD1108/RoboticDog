@@ -1,8 +1,11 @@
 #include <new>
 #include <cstdint>
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
 
 #include "servoPCAWrapper.h"
 #include "servoPCA.hpp"
+#include "globals.h"
 
 extern "C"{
     ServoPCAHandle servoCreate(int low, int high, int chanel){
@@ -30,4 +33,7 @@ extern "C"{
     void calibration(int angle){
         ServoPCA::calibration(angle);
     } 
+    void walk(void *pvParameters){
+        ServoPCA::walk();
+    }
 }
