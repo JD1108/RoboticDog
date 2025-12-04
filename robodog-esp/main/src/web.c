@@ -159,6 +159,7 @@ esp_err_t calHandler(httpd_req_t *req){ // here Debug
         if(httpd_query_key_value(buff,"turn",cAng,sizeof(cAng))==ESP_OK){
             ang=atoi(cAng);
             printf("jo\n");
+            //Test
         }
     }
     vTaskDelay(pdMS_TO_TICKS(1000));
